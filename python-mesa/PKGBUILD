@@ -1,0 +1,26 @@
+# Maintainer: Sara Jakša <sarajaksa@gmail.com>
+
+_pkgname=python-mesa
+pkgname=$_pkgname-git
+pkgver=0.8.3.r955.0e02c59
+pkgrel=1
+pkgdesc="Python3 library for Agent-Based Modeling"
+arch=('any')
+url="pytumblr::git+https://github.com/projectmesa/mesa"
+license=('Apache')
+depends=('python' 'python-coverage' 'python-nose' 'python-tornado' 'flake8' 'python-tqdm' 'python-networkx' 'python-numpy' 'python-pandas' 'jupyter-notebook')
+makedepends=('python-setuptools' 'git')
+provides=($_pkgname)
+conflicts=($_pkgname)
+source=("pytumblr::git+https://github.com/projectmesa/mesa")
+sha256sums=('SKIP')
+
+pkgver() {
+    cd "${srcdir}/pytumblr"
+    printf "%s.r%s.%s" "$(python setup.py --version)" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package() {
+    cd "${srcdir}/pytumblr"
+    python setup.py install --root="${pkgdir}/"
+}
