@@ -1,0 +1,41 @@
+# Maintainer: Sara Jakša <sarajaksa@gmail.com>
+
+_pkgname=python-mne
+pkgname=$_pkgname-git
+pkgver=0.16.r95.g241161d00
+pkgrel=1
+pkgdesc="A python package for exploring, visualizing, and analyzing human neuropsysiological data like MEG, EEG, sEEG, ECoG, and more"
+arch=('any')
+url="https://github.com/mne-tools/mne-python"
+license=('BSD')
+depends=('python'
+         'python-numpy'
+         'python-scipy'
+        )
+makedepends=('git'
+             'python-setuptools'
+            )
+#add optional dependencies
+optdepends=('python-matplotlib: 2D vizualization'
+            'mayavi: 3D vizualization'
+            'python-scikit-learn: additional analysis'
+            'python-pandas: additional analysis'
+            'python-nibabel: reading neuroimaging data'
+            'picard'
+           )
+provides=($_pkgname)
+conflicts=($_pkgname)
+source=($pkgname::git://github.com/mne-tools/mne-python.git)
+md5sums=('SKIP')
+
+pkgver() {
+  cd $pkgname
+  git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+package() {
+  cd $pkgname
+  python setup.py install --root="$pkgdir/" --optimize=1
+}
+
+
